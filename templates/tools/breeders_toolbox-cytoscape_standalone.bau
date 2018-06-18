@@ -1,0 +1,49 @@
+$$SYNTAX-LEVEL 2
+*(cytoscape-standalone {
+      include-js: /js/cytoscape.min.js
+    | include-js: /js/breeders-toolbox.js
+    | include-js: /js/jquery.context-menu.js
+    | include-css: /css/breeders-toolbox.css
+  }
+
+  ;; Variable declarations to avoid missing identifiers when doing an embedded view
+  @(lambda {display: off}
+    $(full-node-count)
+    $(full-edge-count)
+    $(node-count)
+    $(edge-count)
+    $(node-limit)
+    $(edge-limit)
+    $(network-csv)
+    $(textarea)
+    @(nodes-from $(node))
+    @(nodes-to $(node))
+  )
+
+<span id="cytoscape-data" class="hidden">$(cytoscape-data)</span>
+<span id="cytoscape-path" class="hidden">$(cytoscape-path)</span> ;; current path, if available
+<span id="node-center" class="hidden">$(node-center)</span>
+<span id="initial-layout" class="hidden">$(initial-layout)</span>
+@(pednet_link {display: off}
+  <a href="/breeders_toolbox?data=$(node-center)&layout=cose" target="_parent" style="color: lightgreen; font-weight: bold; text-decoration: underline">Click here to go to the Pedigree Viewer</a><br>
+)
+<div id="cytoscape" class="active @(standalone {display: off} standalone)">
+  <div id="context-menu" class="context-menu">
+    <div class="heading">
+      <h4>
+        <span class="current-line"></span>
+        <span class="menu-close">&times;</span>
+      </h4>
+    </div>
+    <div class="body">
+      <a id="cm-link" href="#" target="_blank">Search <span class="current-line"></span> at MaizeGDB</a>
+    </div>
+  </div>
+</div>
+
+  <script>
+    window.contextMenu = \$('\#context-menu'\).contextMenu(\{
+      container\: \$('\#cytoscape'\)
+    \}\);
+  </script>
+)

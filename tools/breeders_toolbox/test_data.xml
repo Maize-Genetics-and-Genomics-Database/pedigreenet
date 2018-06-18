@@ -1,0 +1,40 @@
+<graphml>
+  <key id="label" for="all" attr.name="label" attr.type="string"/>
+  <key id="weight" for="node" attr.name="weight" attr.type="double"/>
+  <graph edgedefault="directed">
+    <node id="318">
+      <data key="label">(GA24 x Lc33)</data>
+    </node>
+    <node id="316">
+        <data key="label">GA217</data>
+    </node>
+    <node id="1">
+        <data key="label">Ab12A</data>
+    </node>
+    <node id="2">
+        <data key="label">Local unnamed Alabama variety</data>
+    </node>
+    <node id="3">
+        <data key="label">Ab16</data>
+    </node>
+    <node id="4">
+        <data key="label">M14</data>
+    </node>
+    <node id="5">
+        <data key="label">G152</data>
+    </node>
+
+    <edge id="1" source="2" target="1">
+        <data key="label">Neutral</data>
+    </edge>
+    <edge id="2" source="4" target="3">
+        <data key="label">Female</data>
+    </edge>
+    <edge id="3" source="5" target="3">
+        <data key="label">Male</data>
+    </edge>
+    <edge id="270" source="318" target="316">
+        <data key="label">Male</data>
+    </edge>
+  </graph>
+</graphml>

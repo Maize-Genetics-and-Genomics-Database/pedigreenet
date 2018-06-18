@@ -1,0 +1,53 @@
+$$SYNTAX-LEVEL 2
+*(breeders_toolbox-cytoscape {
+     include-js: /js/breeders-toolbox.js
+   | include-js: /js/jquery.context-menu.js
+   | include-js: /js/tabs.js
+   | include-css: /css/breeders-toolbox.css
+   | include-css: /css/tabs.css
+ }
+
+  *(lambda {load: templates/tools/breeders_toolbox-options.bau})
+
+  <div class="container" id="results">
+    @(lambda { visible-unless-defined: node-limit }
+      <ul class="tabs">
+        <li class="tab_focus" id="disperse-btn">Expand Network</li>
+        <li class="tab_focus" id="compress-btn">Compress Network</li>
+      </ul>
+      <div class="tab-content network">
+        *(lambda {load: templates/tools/breeders_toolbox-cytoscape_standalone.bau})
+      </div>
+    )
+
+    ;; import functionality
+    <div class="ctrl-panel">
+      <form id="text-upload" name="text-upload" action="/breeders_toolbox" method="get">
+        <fieldset>
+          <legend>Please enter a comma-separated list of inbred lines in the form “pedigree, progeny” \(one per row\), or enter a single stock to build a stock-centric network <br> <a id="example-text1" class="example" href="#input-area">Sample network</a> <a id="example-text2" class="example" href="#input-area">B37-centric pedigree network</a></legend>
+          <textarea id="input-area" name="input-area">$(textarea)</textarea>
+          <input type="submit" value="Submit">
+        </fieldset>
+      </form>
+      <form name="file-upload" action="/breeders_toolbox" method="post" enctype="multipart/form-data">
+        <fieldset>
+          <legend>Or upload a file (<a href="/tools/breeders_toolbox/sample-network.csv" target="_blank">see example</a>\)</legend>
+          <input type="hidden" name="uploaded" value="true">
+          <input type="file" name="file">
+          <input type="submit" value="Upload file">
+        </fieldset>
+      </form>
+      <div>
+        <a href="/tools/breeders_toolbox/mgdb_pedigrees.csv" download="/tools/breeders_toolbox/mgdb_pedigrees.csv">Download Full Network ($(full-node-count) nodes, $(full-edge-count) edges\)</a>
+      </div>
+    </div>
+    <div id="embed-container">
+    </div>
+  </div>
+
+  <script>
+    window.contextMenu = \$('\#context-menu'\).contextMenu(\{
+      container\: \$('\#cytoscape'\)
+    \}\);
+  </script>
+)

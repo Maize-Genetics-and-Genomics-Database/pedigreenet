@@ -1,0 +1,21 @@
+ul.tabs > li {
+  display: inline-block;
+  border-top-left-radius: 10px 5px;
+  border-top-right-radius: 10px 5px;
+  font-size: 14px;
+  padding: 3px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #bedaa7;
+	opacity: 0.4;
+}
+ul.tabs > li.tab_focus {
+	background-color: #81ad34;
+  opacity: 1;
+}
+.tab-content > div {
+  display: none;
+}
+.tab-content > div.active {
+  display: block;
+}

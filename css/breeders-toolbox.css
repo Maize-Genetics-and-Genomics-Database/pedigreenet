@@ -1,0 +1,212 @@
+.cyto__container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px;
+}
+.cyto__item {
+  width: 680px;
+  flex: 1 1 50%;
+}
+
+.cyto__button {
+  padding: 6px 12px;
+  float: right;
+}
+.cyto__block {
+  padding: 2px 16px;
+}
+.cyto__input {
+  width: 120px;
+  padding: 6px;
+}
+.cyto__h3 {
+  background-color: #386F0D;
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px;
+  margin: 4px;
+  font-size: 15px;
+  text-align: center;
+}
+.cyto__option {
+  float: left;
+  margin-right: 42px;
+}
+.cyto__export {
+  clear: both;
+  padding-top: 20px;
+}
+#cytoscape {
+  height: 900px;
+  z-index: 1;
+  position: relative;
+}
+#cytoscape.standalone canvas {
+  left: 0;
+  height: 900px;
+}
+
+.description {
+  padding: 6px;
+  margin-bottom: 12px;
+  background-color: rgb(221, 221, 221);
+  border-radius: 4px;
+}
+.description__error {
+  background-color: rgb(255, 178, 97) !important;
+}
+.description p {
+  font-size: 12px;
+}
+
+.network {
+  background-color: white;
+}
+
+.ctrl-panel {
+  background-color: rgb(180, 180, 180);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.ctrl-panel fieldset {
+  padding: 20px;
+  margin-bottom: 10px;
+}
+.ctrl-panel textarea {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+}
+.ctrl-panel dt {
+  float: left;
+  font-weight: bold;
+  margin-right: 16px;
+}
+
+.hidden {
+  display: none;
+}
+
+.examples {
+  font-size: 10px;
+}
+
+.example {
+  color: #fff;
+  background-color: #386f0d;
+  padding: 1px 9px;
+  border-radius: 4px;
+}
+.example:hover {
+  background-color: #4c9c0e;
+}
+
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+
+.toolbox-options {
+  font-size: 12px;
+  width: 96%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.toolbox-options ul {
+  margin: 20px;
+  list-style-type: none;
+}
+.toolbox-options li {
+  list-style-type: none;
+  margin-bottom: 6px;
+}
+
+.error {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading {
+  position: relative;
+  opacity: 0.5;
+}
+.loading::after {
+  content: 'Loading...';
+  animation: pulse 1500ms ease-in-out alternate infinite;
+  font-size: 150px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading .no-after{
+  content: "";
+}
+
+.context-menu {
+  visibility: hidden;
+  display: inline-block;
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 4px;
+  font-size: 22px;
+  position: absolute;
+  z-index: 9999;
+}
+.context-menu .heading {
+  background-color: rgb(180, 180, 180);
+  color: #0a0a0a;
+  text-align: center;
+}
+.context-menu .heading h4 {
+  font-size: 26px;
+  padding: 2px 0;
+}
+.context-menu .body {
+  padding: 12px;
+  background-color: #fff;
+}
+.context-menu .menu-close {
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 0 5px;
+  background-color: #fff;
+  color: #000;
+}
+.context-menu .menu-close:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.subtitle {
+  font-size: 10px;
+  padding: 2px 4px;
+}
+
+.standalone {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}

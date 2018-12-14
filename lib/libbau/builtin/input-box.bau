@@ -1,0 +1,12 @@
+$$SYNTAX-LEVEL 2
+*(input-box
+	@(lambda {display: off}
+		$(size {default:  25})
+		$(name)
+		$(id)
+		$(class)
+		$(maxlength)
+	)
+	
+	<input type="text" name="$(name)" id="$(id)" class="$(class)" size="$(size)" maxlength="$(maxlength)"/>
+)

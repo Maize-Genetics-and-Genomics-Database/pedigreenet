@@ -1,0 +1,4 @@
+$$SYNTAX-LEVEL 2
+*(image
+	<img src=$(src {required}) #(unless-empty alt=$(alt)) #(unless-empty name=$(name)) #(unless-empty id=$(id)) #(unless-empty class=$(class))/>
+)

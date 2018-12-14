@@ -1,0 +1,5 @@
+$$SYNTAX-LEVEL 2
+*(link
+	;; A Bauplan wrapper template for HTML links (a href)
+	<a href="$(url {required})" #(unless-empty target="$(target)")>$(link-text {required})</a>
+)

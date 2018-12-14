@@ -1,0 +1,5 @@
+$$SYNTAX-LEVEL 2
+*(html-attributes
+	;; HTML attributes common to all entities
+	#(unless-empty name="$(name)") #(unless-empty id="$(id)") #(unless-empty class="$(class)")
+)

@@ -1,0 +1,10 @@
+$$SYNTAX-LEVEL 2
+*(unordered-list ;; {extends: html-entity.bau}
+	<ul>
+		@(items
+			#(unless-empty ;; allow empty lists
+				<li>$(item)</li>
+			)
+		)
+	</ul>
+)

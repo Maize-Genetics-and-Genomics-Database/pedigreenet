@@ -1,0 +1,8 @@
+$$SYNTAX-LEVEL 2
+*(select
+	<select #(unless-empty name="$(name)") #(unless-empty class="$(class)") #(unless-empty onFocus="$(on-focus-event)") $(additional-properties)>
+	@(options
+		<option @(selected {display: off} selected) value="$(option-value {required})">$(option {get-value: option-value})</option>
+	)
+	</select>
+)

@@ -1,0 +1,4 @@
+$$SYNTAX-LEVEL 2
+*(paragraph ;;{extends: html-entity.bau}
+	<p>$(text)</p>
+)

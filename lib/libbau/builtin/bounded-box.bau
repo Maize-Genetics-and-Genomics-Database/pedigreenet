@@ -1,0 +1,39 @@
+$$SYNTAX-LEVEL 2
+*(bounded-box {include-js-relative: js/bounded_box.js} ;; path is relative to this file
+	@(lambda {display: off} ;; inits
+		$(name {required})       ;; required so js function can refer to it
+		$(count-name {required}) ;; same as above
+		$(char-limit {required})
+		$(limit-text {default: Characters Remaining})
+		$(count-size {default: 2})
+	)
+	
+	;; this is the text area
+;;	<textarea
+;;		*(lambda {load: html-attributes.bau}
+			;; need to pass down name... this does it at runtime... if eager can it do it at compile time?
+;;			&(lambda {allow-native}
+;;				name: $(name) ;; since it's required
+;;			)
+;;		)
+		;; now attributes specific to this entity
+;;		...
+;;	>
+;;	</textarea>
+	
+	;; this is the text area	
+	<textarea name="$(name)" id="$(id)" class="$(class)"
+	   rows="$(rows {default: 15})" cols="$(columns {default: 81})"
+	   onKeyDown="textCountdown(this.form.$(name), this.form.$(count-name), $(char-limit)\)"
+	   onKeyUp="textCountdown(this.form.$(name), this.form.$(count-name), $(char-limit})\)">
+	</textarea>
+	<br\>
+	
+	;; this is the countdown box
+	@(limit-countdown
+		<input readonly type="text"
+		   style="text-align: center;" name="$(count-name)" size="$(count-size)"
+		   value="$(char-limit)">
+		   $(limit-text)
+	)
+)

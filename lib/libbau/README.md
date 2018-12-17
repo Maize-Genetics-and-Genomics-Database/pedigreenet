@@ -3,13 +3,19 @@
 Bauplan, developed by Bremen Braun, is a custom templating language that PedigreeNet was built with. Just including these libraries with the PedigreeNet code will be enough to get the tool working in your installation.
 
 It is not expected for users to understand how Bauplan works in order to install and use the tool, but users who wish to edit or expand upon the tool should become familiar with its basic syntax. First, in the controller files (PHP) the bauplan object is created with :
-
-  $bauplan = new Bauplan('Welcome to MaizeGDB');
-
+```
+<?php
+    $bauplan = new Bauplan('Welcome to MaizeGDB');
+?>
+```
 The .bau files are bauplan templates that are mostly HTML, but do contain some bauplan syntax. These files are loaded into the bauplan object with this command:
- 
-  $tmpl = 'templates/tools/breeders_toolbox.bau';
-  $mgdb = $bauplan->template($bauplan->template()->load($tmpl));
+
+```
+<?php 
+    $tmpl = 'templates/tools/breeders_toolbox.bau';
+    $mgdb = $bauplan->template($bauplan->template()->load($tmpl));
+?>
+```
   
 From here on the $mgdb variable can control the HTML in the .bau file specified in $tmpl. The full documentation of how to use Bauplan is given below.
 
@@ -345,8 +351,7 @@ Directives are compile-time evaluations for types.
 * loop-autoscope: <on | off> (ON BY DEFAULT)
   * Added for backwards compatibility. When looping over a section, each loop is given its own scope.
   * If you need to refer to a variable inside of a loop that was declared outside the section, set loop-autoscope to off and then scope manually
-
-    * Example:
+  * Example:
 ```
 $$SYNTAX-LEVEL 2
 *(manual-scope-example
@@ -428,10 +433,14 @@ $$SYNTAX-LEVEL 2
       )
    )
 )
- ```
-    * The preceding example will output
-```Hello there, from Bremen in Ames!```
-    * This is useful for generic structures where configuration is known ahead of time by the template author
+```
+  * The preceding example will output
+  
+```
+Hello there, from Bremen in Ames!
+```
+
+  * This is useful for generic structures where configuration is known ahead of time by the template author
 
 * eager
   * Evaluate code at compile-time

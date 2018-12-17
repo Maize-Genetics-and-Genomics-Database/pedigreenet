@@ -434,13 +434,14 @@ $$SYNTAX-LEVEL 2
    )
 )
 ```
-  * The preceding example will output
+
+The preceding example will output
   
 ```
 Hello there, from Bremen in Ames!
 ```
 
-  * This is useful for generic structures where configuration is known ahead of time by the template author
+This is useful for generic structures where configuration is known ahead of time by the template author
 
 * eager
   * Evaluate code at compile-time

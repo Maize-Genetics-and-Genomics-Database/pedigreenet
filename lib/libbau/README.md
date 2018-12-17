@@ -16,13 +16,13 @@ From here on the $mgdb variable can control the HTML in the .bau file specified 
 ## Type System
 Definable types are classifiable into 3 different supertypes:
 
-N-ary: Able to hold other types
+1) N-ary: Able to hold other types
  * Template
  * Section
-Unary: Cannot hold other types
+2) Unary: Cannot hold other types
  * Variable
  * Code
-N1ary: Can only hold Unary types
+3) N1ary: Can only hold Unary types
  * Keyword
 
 ### Template

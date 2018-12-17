@@ -17,13 +17,13 @@ From here on the $mgdb variable can control the HTML in the .bau file specified 
 Definable types are classifiable into 3 different supertypes:
 
 N-ary: Able to hold other types
-  Template
-  Section
+ * Template
+ * Section
 Unary: Cannot hold other types
-  Variable
-  Code
+ * Variable
+ * Code
 N1ary: Can only hold Unary types
-  Keyword
+ * Keyword
 
 ### Template
 The outer-most type for every template file. Templates may be thought of as being analogous to objects in OOP and therefore it will be useful to structure your page with each distinct page element being created as a template.

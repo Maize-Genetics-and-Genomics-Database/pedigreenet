@@ -24,7 +24,7 @@ $$SYNTAX-LEVEL 2
     <div class="ctrl-panel">
       <form id="text-upload" name="text-upload" action="/breeders_toolbox" method="get">
         <fieldset>
-          <legend>Please enter a comma-separated list of inbred lines in the form “pedigree, progeny” \(one per row\), or enter a single stock to build a stock-centric network <br> <a id="example-text1" class="example" href="#input-area">Sample network</a> <a id="example-text2" class="example" href="#input-area">B37-centric pedigree network</a></legend>
+          <legend>Please enter a comma-separated list of varieties in the form “pedigree, progeny” \(one per row\), or enter a single variety to build a variety-centric network <br> <a id="example-text1" class="example" href="#input-area">Sample network</a> <a id="example-text2" class="example" href="#input-area">B37-centric pedigree network</a></legend>
           <textarea id="input-area" name="input-area">$(textarea)</textarea>
           <input type="submit" value="Submit">
         </fieldset>

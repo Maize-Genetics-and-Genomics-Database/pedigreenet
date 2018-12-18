@@ -377,16 +377,16 @@ $(function () {
 
     $('#example1').click(function () { // Illinois Lines
         $('.option-list > li > input').attr('checked', false);
-        $('#state').val('Illinois');
+        $('#states').val('Illinois');
         $('#state-checkbox').click();
         $('#filter-submit').click();
     });
 
     $('#example2').click(function () { // Georgia lines
         $('.option-list > li > input').attr('checked', false);
-        $('#state').val('Georgia');
+        $('#states').val('Georgia');
         $('#state-checkbox').click();
-        $('#developer').val(50637); // USDA-ARS
+        $('#developers').val(50637); // USDA-ARS
         $('#developer-checkbox').click();
         $('#filter-submit').click();
     });
@@ -416,6 +416,20 @@ $(function () {
     $('#example-text2').click(function () {
         $('#input-area').val("B37");
     });
+    
+    $('#filter-reset').click(function () {
+        console.log("clicked reset button");
+        $('#states option:selected').remove();
+        $('#developers option:selected').remove();
+        $('#sources option:selected').remove();
+        $('#countries option:selected').remove();
+        
+        $('#developer-checkbox').prop('checked', false);
+        $('#state-checkbox').prop('checked', false);
+        $('#source-checkbox').prop('checked', false);
+        $('#country-checkbox').prop('checked', false);
+        
+    });
 
 });
 function embedPedNetStock(stock,element){
@@ -431,3 +445,52 @@ function embedPedNetStock(stock,element){
     iframe.height = '0';
     document.body.appendChild(iframe);
 }
+
+/* Insert a dropdown menu to select an additional state to filter upon */
+
+var num_states = 1;
+var max_filter = 10;
+function insert_state() {
+    var state_html;
+    num_states++;
+    state_html = "<tr><td>&nbsp;</td><td><select class=\"cyto__input\" id=\"state" + num_states + "\" name=\"state" + num_states + "\">";
+    state_html += "<option value=\"\">-</option>";
+    $('#state option').each(function() {
+        var state = $(this).val();
+        if (state != "default") {
+            state_html += "<option value=\"" + state + "\">" + state + "</option>";
+        }
+    });
+    state_html += "</select>";
+    state_html += "<input type=\"button\" class=\"cyto__button-small\" value=\"Add State\" id=\"btn_add_state\" onclick=\"insert_state(\);this.remove();\"";
+    if (num_states == max_filter) {
+        console.log("disable button....");
+        state_html += " disabled"; //disable the button at 10 items
+    }
+    state_html += "/>";
+    $('#tbl_state tr:last').after(state_html);
+    $('#num-states').val(num_states);
+
+}
+
+  $(document).ready(function() {
+
+        $('#states').select2({
+          placeholder: 'Select or type a state',
+          maximumSelectionLength: 10
+        });
+        $('#developers').select2({
+          placeholder: 'Select or type a developer',
+          maximumSelectionLength: 10
+        });
+        $('#countries').select2({
+          placeholder: 'Select or type a country',
+          maximumSelectionLength: 10
+        });
+        $('#sources').select2({
+          placeholder: 'Select or type a source',
+          maximumSelectionLength: 10
+        });
+  });
+  
+      

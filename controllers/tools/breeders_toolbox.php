@@ -6,13 +6,16 @@
   include_once('./lib/Benchmarker.php');
   include_once('./lib/ResponseCapturer.php');
   include_once('./include/breeders_functions.php');
-    /*
+
+
+   /*
      NOTE: The below two files were not included in the GitHub repo because they contain functions specifically designed to query MaizeGDB's database schema. 
      In particular, these files contained functions to create the filters in the PedNet search form.
      Users will need to implement their own filters for their own datasets here.
      include_once('./controllers/data_center/stock_functions.php'); 
      include_once('./include/stock_adv_functions.php'); 
   */
+  
   
   // pseudo-routing
   $embed = !!getCGIParam('embed', 'PG');
@@ -22,7 +25,6 @@
     ));
     die();
   }
-  //NOTE: imageData is an optional parameter used to create thumbnail images of networks.
   elseif ($imgData = getCGIParam('imageData', 'P', false)) {
     $stock = getCGIParam('stock', 'P', false); 
     $filename = "tools/breeders_toolbox/img_data/$stock.png";
@@ -45,16 +47,13 @@
     $network->filterToMinimumDistance($from, $to, true);
     echo $network->toJSON();
     
-    die(); 
+    die("breeders_toolbox.php() line 33"); // hack to prevent body from being returned in AJAX responses
   }
   elseif (($data = getCGIParam('csv-data', 'P'))) {
     exportFile($data, 'network', 'csv');
   }
   else {
     $dbh = connect_to_database();
-    // NOTE: The 3 lines of code below are part of an internal templating language that is not included in the GitHub repository and won't work out-of-the-box. 
-    // Ultimately, the templating language we used was to write output from the controllers to the html template (*.bau files)
-    // Please modify accordingly to write output to the template files. 
     $tmpl = 'templates/tools/breeders_toolbox.bau';
     $cyto = 'templates/tools/breeders_toolbox-cytoscape_standalone.bau';
     $toolbox = $embed ? $bauplan->template($bauplan->template()->load($cyto)) : $mgdb->get('body')->load($tmpl);
@@ -120,10 +119,6 @@ function rectifyNames($names){
 
   /*
    * Run main functionality
-   *
-   * NOTE: The $toolbox variable contains the structure of a custom template that is not included in GitHub. 
-   * The $toolbox is used to write data directly to variables declared inside the template and won't work out-of-the-box. 
-   * Please modify accordingly 
    */
   function buildCytoscape($dbh, $toolbox, $embed=false) {
     $system = getSystemInfo('mgdb.conf');
@@ -131,8 +126,13 @@ function rectifyNames($names){
     $nodeLimit = $system['cytoscape_node_limit'];
     $edgeLimit = $system['cytoscape_edge_limit'];
 
+    $vars = getParamDump('GP');
+    
+    // Running filters
+    $opts = buildOpts($vars);
+    
     if (!$embed) {
-      buildFilterUI($dbh, $toolbox);
+      buildFilterUI($dbh, $toolbox, $vars);
     }
     else {
       $toolbox->get('standalone')->unmute();
@@ -142,8 +142,7 @@ function rectifyNames($names){
     $toolbox->get('full-node-count')->replace($formatter->getNodeCount()); 
     $toolbox->get('full-edge-count')->replace($formatter->getEdgeCount()); 
 
-    // Running filters
-    $opts = buildOpts();
+    
     
     if (count(array_keys($opts)) > 0) {
       $filtered = runPedigreeFilter($dbh, $opts);
@@ -293,12 +292,65 @@ function rectifyNames($names){
     );
   }
 
-  function buildFilterUI($dbh, $template) {
-    $template->get('state-list')->unroll('state', getRepresentedStates($dbh));
+  function buildFilterUI($dbh, $template, $vars) {
+    
+    //Pre-populate filters from last search's selections
+    $states = getRepresentedStates($dbh);
+    for ($i=0; $i<count($states); $i++) {
+        $states[$i]['selected'] = "";
+        if (in_array($states[$i]['state'], $vars['states'])) {
+             $states[$i]['selected'] = "selected";
+        }
+    }
+    
+    $countries = getRepresentedCountries($dbh);
+    for ($i=0; $i<count($countries); $i++) {
+        $countries[$i]['selected'] = "";
+        if (in_array($countries[$i]['country'], $vars['countries'])) {
+             $countries[$i]['selected'] = "selected";
+        }
+      
+    }
+    
+    $developers = getRepresenteddevelopers($dbh);
+    for ($i=0; $i<count($developers); $i++) {
+        $developers[$i]['selected'] = "";
+        if (in_array($developers[$i]['id'], $vars['developers'])) {
+            $developers[$i]['selected'] = "selected";
+        }
+    }
+
+    $sources = getRepresentedsources($dbh);
+    for ($i=0; $i<count($sources); $i++) {
+        $sources[$i]['selected'] = "";
+        if (in_array($sources[$i]['id'], $vars['sources'])) {
+            $sources[$i]['selected'] = "selected";
+        }
+    }
+    
+    $template->get('state-list')->loop($states);
+    $template->get('country-list')->loop($countries);
+    $template->get('developer-list')->loop($developers);
+    $template->get('sources-list')->loop($sources);
+    
+    if ($vars['filter-state'] == "on") {
+        $template->get('state-checked')->unmute();
+    }
+    
+    if ($vars['filter-developer'] == "on") {
+        $template->get('developer-checked')->unmute();
+    }
+    
+    if ($vars['filter-source'] == "on") {
+    $template->get('source-checked')->unmute();
+    }
+   if ($vars['filter-country'] == "on") {
+        $template->get('country-checked')->unmute();
+    }
     // Pedigree filters
-    $template->get('country-list')->loop(getRepresentedCountries($dbh));
-    $template->get('developer-list')->loop(getRepresentedDevelopers($dbh));
-    $template->get('sources-list')->loop(getRepresentedSources($dbh));
+    //$template->get('country-list')->loop(getRepresentedCountries($dbh));
+    //$template->get('developer-list')->loop(getRepresentedDevelopers($dbh));
+    //$template->get('sources-list')->loop(getRepresentedSources($dbh));
      
     // Stock filters
     $template->get('developer_options')->replace(getDeveloperOptions($dbh)); 
@@ -308,24 +360,27 @@ function rectifyNames($names){
     
   }
 
-  function buildOpts() {
-    $vars = getParamDump('GP');
-  
+  function buildOpts($vars) {
+
+  // echo "vars dump <br>";
+ //  echo "<pre>";var_dump($vars);echo "</pre>";
     // Stock Filters
     $opts = array();
     $dependents = array( // checkbox names to input names
       'stock_center'                => 'stock_center',
-      'filter-developer'            => 'developer',
-      'filter-sources'              => 'source',
-      'filter-country'              => 'country',
+      'filter-developer'            => 'filter-developer',
+      'filter-source'              => 'filter-source',
+      'filter-country'              => 'filter-country',
       'filter-identifier'           => 'name',
       'filter-type'                 => 'type',
-      'filter-state'                => 'state',
+      'filter-state'                => 'filter-state',
       'filter-line'                 => 'line', // TODO
       'filter-linkage_groups'       => 'linkage_groups',
       'filter-genotypic_variation1' => 'genotypic_variation1',
       'filter-karyotypic_variation' => 'karyotypic_variation'
     );
+          //'num-states'                  => 'num-states',
+     // 'state2'                  => 'state2'
     foreach ($dependents as $selected => $key) {
       if ((array_key_exists($selected, $vars) && $vars[$selected] == 'on')) {
         $opts[$key] = $vars[$key];
@@ -340,7 +395,43 @@ function rectifyNames($names){
       }
     }
   
-    return $opts;
+    //Multiple selections from each of the below filters can now be made
+    if (count($vars['states']) > 0) {
+        $opts['num-states'] = count($vars['states']);
+        for ($i=0; $i<$opts['num-states']; $i++) {
+            $opts['state'.$i] = $vars['states'][$i];
+        }
+    }
+    
+    if (count($vars['developers']) > 0) {
+        $opts['num-developers'] = count($vars['developers']);
+        for ($i=0; $i<$opts['num-developers']; $i++) {
+            $opts['developer'.$i] = $vars['developers'][$i];
+        }
+    }
+    
+    if (count($vars['sources']) > 0) {
+        $opts['num-sources'] = count($vars['sources']);
+        for ($i=0; $i<$opts['num-sources']; $i++) {
+            $opts['source'.$i] = $vars['sources'][$i];
+        }
+    }
+    
+    if (count($vars['countries']) > 0) {
+        $opts['num-countries'] = count($vars['countries']);
+        for ($i=0; $i<$opts['num-countries']; $i++) {
+            $opts['country'.$i] = $vars['countries'][$i];
+        }
+    }
+  
+  
+    //return $vars;
+    
+    //echo "<br><br>opts dump <br>";
+  // echo "<pre>";var_dump($opts);echo "</pre><br><br>";
+    
+    //return $vars; //TODO: Test this well to make sure this doesnt break anything
+    return $opts; //original code
   }
 
   function runPedigreeFilter($dbh, $opts) {
@@ -429,4 +520,6 @@ function rectifyNames($names){
     return $commas == $lines;
   }
   
+  
 ?>
+

@@ -12,6 +12,14 @@
   padding: 6px 12px;
   float: right;
 }
+
+.cyto__button-small{
+  padding: 3px 6px;
+  float: right;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
 .cyto__block {
   padding: 2px 16px;
 }

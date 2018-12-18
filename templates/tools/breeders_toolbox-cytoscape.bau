@@ -29,12 +29,15 @@ $$SYNTAX-LEVEL 2
           <input type="submit" value="Submit">
         </fieldset>
       </form>
-      <form name="file-upload" action="/breeders_toolbox" method="post" enctype="multipart/form-data">
+      <form name="file-upload" id="file-upload" action="/breeders_toolbox"  method="post" enctype="multipart/form-data">
         <fieldset>
           <legend>Or upload a file (<a href="/tools/breeders_toolbox/sample-network.csv" target="_blank">see example</a>\)</legend>
           <input type="hidden" name="uploaded" value="true">
-          <input type="file" name="file">
-          <input type="submit" value="Upload file">
+          <input type="file" id="file" name="file">
+          <input type="button" onclick="javascript:validate_file_upload(\)" value="Upload file"> 
+          <div id="no-file-err" style="display: none; color: crimson; font-weight: bold">
+            You did not select a file to upload!
+          </div>
         </fieldset>
       </form>
       <div>
@@ -49,5 +52,15 @@ $$SYNTAX-LEVEL 2
     window.contextMenu = \$('\#context-menu'\).contextMenu(\{
       container\: \$('\#cytoscape'\)
     \}\);
+    
+    function validate_file_upload(\) {
+       if (\$("#file"\).val(\) == ''\) { //no file selected
+            \$("#no-file-err"\).show(\);
+            return false;
+        }
+        \$("#no-file-err"\).hide(\);
+        \$("#file-upload"\).submit(\);
+        return true;
+    }
   </script>
 )
